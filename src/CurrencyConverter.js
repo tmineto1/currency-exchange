@@ -15,6 +15,7 @@ class CurrencyConverter extends React.Component {
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
     this.convert = this.convert.bind(this);
+    this.swapCurrencies = this.swapCurrencies.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +47,16 @@ class CurrencyConverter extends React.Component {
       .catch((err) => console.error(err));
   }
 
+  swapCurrencies() {
+    this.setState(
+      (prevState) => ({
+        fromCurrency: prevState.toCurrency,
+        toCurrency: prevState.fromCurrency,
+      }),
+      this.convert
+    );
+  }
+
   handleAmountChange(e) {
     this.setState({ amount: e.target.value }, this.convert);
   }
@@ -63,49 +74,65 @@ class CurrencyConverter extends React.Component {
     const { amount, fromCurrency, toCurrency, result, currencies } = this.state;
 
     return (
-      <div className="container">
+      <div className="container card mr-3 col-12">
         <div className="text-center p-3 mb-2">
-          <h2 className="mb-2">Currency Converter</h2>
+          <h2 className="card-title mb-2">Currency Converter</h2>
           <h4>
             {amount} {fromCurrency} = {result !== null ? result : "..."} {toCurrency}
           </h4>
         </div>
 
-        <div className="row text-center">
-          <div className="col-md-4 mb-2">
+        <div className="row justify-content-center g-2 pb-4">
+          <div className="col-12 col-md-3 mb-2 mb-md-0">
             <input
               type="number"
               value={amount}
               onChange={this.handleAmountChange}
-              className="form-control"
+              className="form-control form-control-lg"
             />
           </div>
 
-          <div className="col-md-4 mb-2">
+          <div className="col-12 col-md-3 mb-2 mb-md-0">
             <select
               value={fromCurrency}
               onChange={this.handleFromChange}
-              className="form-control"
+              className="form-select form-select-lg"
             >
               {currencies.map((cur) => (
-                <option key={cur}>{cur}</option>
+                <option key={cur} value={cur}>
+                  {cur}
+                </option>
               ))}
             </select>
           </div>
 
-          <div className="col-md-4 mb-2">
+          <div className="col-12 col-md-auto mb-2 mb-md-0">
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-lg"
+              onClick={this.swapCurrencies}
+              title="Swap currencies"
+            >
+              ⇄
+            </button>
+          </div>
+
+          <div className="col-12 col-md-3 mb-2 mb-md-0">
             <select
               value={toCurrency}
               onChange={this.handleToChange}
-              className="form-control"
+              className="form-select form-select-lg"
             >
               {currencies.map((cur) => (
-                <option key={cur}>{cur}</option>
+                <option key={cur} value={cur}>
+                  {cur}
+                </option>
               ))}
             </select>
           </div>
         </div>
       </div>
+
     );
   }
 }

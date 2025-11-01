@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+/* Make exchange panel scrollable and clean on large screens */
+.exchange-sidebar {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Optional: add slight padding for balance */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure spacing on mobile */
+@media (max-width: 992px) {
+  .exchange-sidebar {
+    margin-top: 1rem;
+  }
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background-color: #f8f9fa; /* optional light background */
+  color: #1b5e20; /* deep green “money” tone */
+}

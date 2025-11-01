@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const ExchangeRate = () => {
   const [rates, setRates] = useState({});
-  const [baseCurrency, setBaseCurrency] = useState("USD"); // <-- base currency state
+  const [baseCurrency, setBaseCurrency] = useState("USD");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,7 +23,7 @@ const ExchangeRate = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, [baseCurrency]); // <-- re-fetch whenever baseCurrency changes
+  }, [baseCurrency]);
 
   if (loading) return <div className="p-3">Loading exchange rates...</div>;
   if (error) return <div className="p-3 text-danger">Error: {error}</div>;
@@ -32,17 +32,9 @@ const ExchangeRate = () => {
 
   return (
     <div
-      className="exchange-rate-panel bg-light border-start p-3"
-      style={{
-        width: "250px",
-        position: "fixed",
-        right: 0,
-        top: 0,
-        height: "100vh",
-        overflowY: "auto",
-      }}
+      className="card bg-light border-start exchange-sidebar"
     >
-      <h5>Exchange Rates</h5>
+      <h3 className="text-center py-4 font-weight-bold">Exchange Rates</h3>
 
       <select
         className="form-select mb-3"
@@ -56,7 +48,7 @@ const ExchangeRate = () => {
         ))}
       </select>
 
-      <table className="table table-hover table-striped table-sm">
+      <table className="table table-striped table-sm">
         <thead>
           <tr>
             <th>Currency</th>
@@ -77,3 +69,4 @@ const ExchangeRate = () => {
 };
 
 export default ExchangeRate;
+

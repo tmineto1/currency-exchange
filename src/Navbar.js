@@ -2,14 +2,14 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="container">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">Navbar</a>
-        </div>
-      </nav>
-    </div>
-  ); // closes the return
-}; // closes the function
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <a className="navbar-brand fw-bold justify-content-center">
+          Global Currency Conversions
+        </a>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;
