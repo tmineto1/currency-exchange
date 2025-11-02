@@ -58,6 +58,11 @@
 
 body {
   font-family: 'Cormorant Garamond', serif;
-  background-color: #f8f9fa; /* optional light background */
-  color: #1b5e20; /* deep green “money” tone */
+
+}
+
+.navbar {
+  font-family: 'Cinzel Decorative', serif;
+  color: white;
+  font-size: 20px;
 }

@@ -31,17 +31,17 @@ class CurrencyConverter extends React.Component {
   }
   
   convert() {
-    const { amount, fromCurrency: from, toCurrency: to } = this.state;
+    const { amount, fromCurrency, toCurrency } = this.state;
 
-    if (from === to) {
+    if (fromCurrency === toCurrency) {
       this.setState({ result: amount });
       return;
     }
 
-    fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`)
+    fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`)
       .then((resp) => resp.json())
       .then((data) => {
-        const convertedAmount = data.rates[to].toFixed(2);
+        const convertedAmount = data.rates[toCurrency].toFixed(2);
         this.setState({ result: convertedAmount });
       })
       .catch((err) => console.error(err));
@@ -57,16 +57,16 @@ class CurrencyConverter extends React.Component {
     );
   }
 
-  handleAmountChange(e) {
-    this.setState({ amount: e.target.value }, this.convert);
+  handleAmountChange(event) {
+    this.setState({ amount: event.target.value }, this.convert);
   }
 
-  handleFromChange(e) {
-    this.setState({ fromCurrency: e.target.value }, this.convert);
+  handleFromChange(event) {
+    this.setState({ fromCurrency: event.target.value }, this.convert);
   }
 
-  handleToChange(e) {
-    this.setState({ toCurrency: e.target.value }, this.convert);
+  handleToChange(event) {
+    this.setState({ toCurrency: event.target.value }, this.convert);
   }
   
 

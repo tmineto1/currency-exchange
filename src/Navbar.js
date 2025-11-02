@@ -2,11 +2,9 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
-        <a className="navbar-brand fw-bold justify-content-center">
-          Global Currency Conversions
-        </a>
+    <nav className="navbar navbar-dark bg-dark py-3">
+      <div className="container-fluid d-flex">
+        <span>Chicago Currency Exchange</span>
       </div>
     </nav>
   );

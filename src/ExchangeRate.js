@@ -1,45 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const ExchangeRate = () => {
-  const [rates, setRates] = useState({});
-  const [baseCurrency, setBaseCurrency] = useState("USD");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+class ExchangeRate extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rates:{},
+      baseCurrency: "USD",
+      loading: true,
+      error: null,
+    };
+  }
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`https://api.frankfurter.app/latest?from=${baseCurrency}`)
+  
+  componentDidMount() {
+    this.fetchRates();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.baseCurrency !== this.state.baseCurrency) {
+      this.fetchRates();
+    }
+  }
+
+  fetchRates() {
+  this.setState({ loading: true });
+
+    fetch(`https://api.frankfurter.app/latest?from=${this.state.baseCurrency}`)
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
       .then((data) => {
         if (!data || !data.rates) throw new Error("No rates found in response");
-        setRates(data.rates);
-        setLoading(false);
+        this.setState({ rates: data.rates, loading: false, error: null });
       })
       .catch((err) => {
         console.error("Error fetching rates:", err);
-        setError(err.message);
-        setLoading(false);
+        this.setState({ error: err.message, loading: false });
       });
-  }, [baseCurrency]);
+  }
 
-  if (loading) return <div className="p-3">Loading exchange rates...</div>;
-  if (error) return <div className="p-3 text-danger">Error: {error}</div>;
+  handleBaseChange = (event) => {
+    this.setState({ baseCurrency: event.target.value });
+  };
 
-  const currencyOptions = ["USD", "EUR", "GBP", "AUD", "CAD", "CHF", "JPY"];
+
+
+  render () {
+    const {rates, baseCurrency, loading, error } = this.state;
+    const currencyOptions = ["USD", "EUR", "GBP", "AUD", "CAD", "CHF", "JPY"]
+
+ 
 
   return (
     <div
-      className="card bg-light border-start exchange-sidebar"
+      className="container card sidebar"
     >
       <h3 className="text-center py-4 font-weight-bold">Exchange Rates</h3>
 
       <select
         className="form-select mb-3"
         value={baseCurrency}
-        onChange={(e) => setBaseCurrency(e.target.value)}
+        onChange={this.handleBaseChange}
       >
         {currencyOptions.map((cur) => (
           <option key={cur} value={cur}>
@@ -48,7 +70,7 @@ const ExchangeRate = () => {
         ))}
       </select>
 
-      <table className="table table-striped table-sm">
+      <table className="table table-striped table-sm table-hover">
         <thead>
           <tr>
             <th>Currency</th>
@@ -68,5 +90,6 @@ const ExchangeRate = () => {
   );
 };
 
+}
 export default ExchangeRate;
 
