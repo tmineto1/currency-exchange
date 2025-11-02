@@ -2,7 +2,7 @@ import React from "react";
 
 const Graph = () => {
   return (
-    <div className="container card mr-3 col-12">
+    <div className="container card mr-3 col-12 p-0">
       <img
         src="chicago-sunset-scaled-1.jpg"
         alt="Chicago sunset"
