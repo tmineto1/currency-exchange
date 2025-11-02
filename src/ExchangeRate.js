@@ -48,7 +48,7 @@ class ExchangeRate extends React.Component {
 
   render () {
     const {rates, baseCurrency, loading, error } = this.state;
-    const currencyOptions = ["USD", "EUR", "GBP", "AUD", "CAD", "CHF", "JPY"]
+    const currencyOptions = ["USD", "EUR", "GBP", "AUD", "CAD", "CHF", "JPY", "BGN", "BRL", "CNY", "CZK", "DKK", "HKD", "HUF", "IDR", "ILS", "INR", "ISK", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PLN", "RON", "SEK", "SGD", "THB", "TRY", "ZAR"]
 
  
 
