@@ -27,15 +27,15 @@ class ExchangeRate extends React.Component {
 
     fetch(`https://api.frankfurter.app/latest?from=${this.state.baseCurrency}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Network response was not ok");
+        if (!res.ok) throw new Error("Error loading Rates");
         return res.json();
       })
       .then((data) => {
-        if (!data || !data.rates) throw new Error("No rates found in response");
+        if (!data || !data.rates) throw new Error("Error loading Rates");
         this.setState({ rates: data.rates, loading: false, error: null });
       })
       .catch((err) => {
-        console.error("Error fetching rates:", err);
+        console.error("Error loading rates:", err);
         this.setState({ error: err.message, loading: false });
       });
   }
@@ -43,8 +43,6 @@ class ExchangeRate extends React.Component {
   handleBaseChange = (event) => {
     this.setState({ baseCurrency: event.target.value });
   };
-
-
 
   render () {
     const {rates, baseCurrency, loading, error } = this.state;
@@ -56,7 +54,7 @@ class ExchangeRate extends React.Component {
     <div
       className="container card sidebar"
     >
-      <h3 className="text-center py-4 font-weight-bold">Exchange Rates</h3>
+      <h3 className="text-center py-4 font-weight-bold">Global Exchange Rates</h3>
 
       <select
         className="form-select mb-3"
@@ -79,7 +77,9 @@ class ExchangeRate extends React.Component {
         </thead>
         <tbody>
           {Object.entries(rates).map(([currency, rate]) => (
-            <tr key={currency}>
+            <tr key={currency}
+                onClick={() => this.setState({ baseCurrency: currency })}
+            >
               <td>{currency}</td>
               <td>{rate.toFixed(2)}</td>
             </tr>
