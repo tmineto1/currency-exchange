@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "./Navbar";
 import ExchangeRate from "./ExchangeRate";
 import CurrencyConverter from "./CurrencyConverter";
-import Graph from "./Graph";
 import Footer from "./Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css"; // Add custom CSS (we’ll define it below)
@@ -19,9 +18,6 @@ function App() {
           {/* Left side: converter */}
           <div className="col-12 col-lg-8 mb-4">
             <CurrencyConverter />
-            <div className="mt-4">
-              <Graph />
-            </div>
           </div>
 
           {/* Right side: exchange rate */}

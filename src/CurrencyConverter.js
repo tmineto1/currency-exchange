@@ -1,4 +1,6 @@
 import React from "react";
+import Chart from 'chart.js/auto';
+import { checkStatus, json } from './utils/fetchUtils';
 
 class CurrencyConverter extends React.Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class CurrencyConverter extends React.Component {
       result: null,
       currencies: [],
     };
+    this.chartRef = React.createRef();
 
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -43,6 +46,7 @@ class CurrencyConverter extends React.Component {
       .then((data) => {
         const convertedAmount = data.rates[toCurrency].toFixed(2);
         this.setState({ result: convertedAmount });
+        this.getHistoricalRates(fromCurrency, toCurrency);
       })
       .catch((err) => console.error(err));
   }
@@ -56,6 +60,49 @@ class CurrencyConverter extends React.Component {
       this.convert
     );
   }
+
+  getHistoricalRates = (base, quote) => {
+    const endDate = new Date().toISOString().split('T')[0];
+    const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    fetch(`https://api.frankfurter.app/${startDate}..${endDate}?from=${base}&to=${quote}`)
+      .then(checkStatus)
+      .then(json)
+      .then(data => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        const chartLabels = Object.keys(data.rates);
+        const chartData = Object.values(data.rates).map(rate => rate[quote]);
+        const chartLabel = `${base}/${quote}`;
+        this.buildChart(chartLabels, chartData, chartLabel);
+      })
+      .catch(error => console.error(error.message));
+  }
+  buildChart = (labels, data, label) => {
+    const chartRef = this.chartRef.current.getContext("2d");
+    if (typeof this.chart !== "undefined") {
+      this.chart.destroy();
+    }
+    this.chart = new Chart(this.chartRef.current.getContext("2d"), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: label,
+            data,
+            fill: false,
+            tension: 0,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      }
+    })
+  }
+
 
   handleAmountChange(event) {
     this.setState({ amount: event.target.value }, this.convert);
@@ -74,7 +121,8 @@ class CurrencyConverter extends React.Component {
     const { amount, fromCurrency, toCurrency, result, currencies } = this.state;
 
     return (
-      <div className="container card mr-3 col-12">
+      <div className="container card mr-3 col-12 d-flex"
+      style={{ minHeight: '600px' }}>
         <div className="text-center p-3 mb-2">
           <h2 className="card-title mb-2">Currency Converter</h2>
           <h4>
@@ -130,6 +178,9 @@ class CurrencyConverter extends React.Component {
               ))}
             </select>
           </div>
+        </div>
+        <div className="canvas">
+          <canvas ref={this.chartRef} />
         </div>
       </div>
 

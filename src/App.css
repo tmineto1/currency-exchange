@@ -67,3 +67,8 @@ body {
   font-size: 20px;
 }
 
+
+.canvas {
+  flex-grow: 1;
+  height: '100%';
+}
